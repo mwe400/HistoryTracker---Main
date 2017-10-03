@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Class-Path: archive-commons-jar-with-dependencies.jar pig.jar pig-withouthadoop.jar commons-validator-1.4.0.jar
