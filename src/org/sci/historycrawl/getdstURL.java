@@ -5,7 +5,7 @@ import org.apache.pig.EvalFunc;
 import org.apache.pig.data.Tuple;
 
 
-public class splitter extends EvalFunc<String> {
+public class getdstURL extends EvalFunc<String> {
 
 	public static final int FIRST = 0;
 	public static final int SECOND = 1;
@@ -24,16 +24,10 @@ public class splitter extends EvalFunc<String> {
 		}*/
 		
 		if(arg0.toString().contains(DELIMITER)){
-			/*String temp = arg0.get(FIRST).toString();
-			String temp1 = arg0.get(1).toString();
-			String temp2 = arg0.get(2).toString();
-			temp = temp + "\t" + temp1 + "\t" + temp2;*/
 			String temp = arg0.get(FIRST).toString();
 			int index1 = temp.indexOf(DELIMITER, 0);
 			int index2 = temp.indexOf(DELIMITER, index1 + 1);
-			return temp.substring(0, index1) + "\t" + temp.substring(index1 + 1, index2) + "\t" + temp.substring(index2 + 1);
-
- 			//return temp.substring(FIRST, temp.indexOf(DELIMITER))+"\t"+temp.substring(temp.indexOf(DELIMITER)+1);
+			return temp.substring(index1 + 1, index2);
 		}
 		
 		return null;

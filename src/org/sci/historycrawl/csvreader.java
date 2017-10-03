@@ -1,8 +1,8 @@
 package org.sci.historycrawl;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -16,10 +16,12 @@ public class csvreader {
 		 try
          {  
 			 
-			 URL u = new URL(filename);
+			 /*URL u = new URL(filename);
 			 URLConnection uc = u.openConnection();
-			 uc.connect();
-			 BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+			 uc.connect();*/
+			 InputStream inputStream = new FileInputStream(filename);
+			 BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+			 //BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 			 System.out.println("Reading file from "+filename);
 			 Thread.sleep(1000);
 			// 	BufferedReader br = new BufferedReader( new FileReader(filename));
