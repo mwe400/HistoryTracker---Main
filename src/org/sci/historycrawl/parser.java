@@ -76,9 +76,20 @@ public class parser extends EvalFunc<DataBag>
             	in = new DataInputStream(fstream);
             	br = new BufferedReader(new InputStreamReader(in));
         		}
-        		catch(Exception e)
+        		catch(IOException e)
         		{
         			
+        		}
+        		finally{
+        			try{
+        			if(fstream != null)
+        			{
+        				fstream.close();
+        			}
+        			} catch (IOException e)
+        			{
+        				
+        			}        			       			
         		}
             	
         		boolean matchingType = getTypeOfMatching();
@@ -338,14 +349,24 @@ public class parser extends EvalFunc<DataBag>
     
     public String getSearchText(){
     	String strLine = "";
+    	FileInputStream fstream = null;
     	try{
     	//FileInputStream fstream = new FileInputStream("/home/hdn11/keywords1.txt");
-    		FileInputStream fstream = new FileInputStream("./keywords1.txt");
+    	fstream = new FileInputStream("./keywords1.txt");
     	DataInputStream in = new DataInputStream(fstream);
     	BufferedReader br = new BufferedReader(new InputStreamReader(in));
     	strLine = br.readLine();
     	}
     	catch (Exception e){
+    		
+    	} finally{
+    		try {
+    			if(fstream != null){
+    				fstream.close();
+    			}
+    		}catch (IOException e){
+    			
+    		}
     		
     	}
     	return strLine;//root url
@@ -372,9 +393,10 @@ public class parser extends EvalFunc<DataBag>
     }
     public void buildHashTable(){
     	hcHashTable = new Hashtable();
+    	FileInputStream fstream = null;
     	try{
     	//FileInputStream fstream = new FileInputStream("/home/hdn11/seedlist1.txt");
-    		FileInputStream fstream = new FileInputStream("./seedlist1.txt");
+    	fstream = new FileInputStream("./seedlist1.txt");
     	DataInputStream in = new DataInputStream(fstream);
     	BufferedReader br = new BufferedReader(new InputStreamReader(in));
     	String strLine;
@@ -382,8 +404,19 @@ public class parser extends EvalFunc<DataBag>
     		if (!hcHashTable.contains(strLine))
     		hcHashTable.put(strLine, 1);
     	}
-    	}catch (Exception e){
+    	}catch (IOException e){
     		
+    	}
+    	finally{
+    		try{
+    			if(fstream != null){
+    				fstream.close();
+    			}
+    				
+    		}
+    		catch(IOException e){
+    			
+    		}
     	}
     	
     }
