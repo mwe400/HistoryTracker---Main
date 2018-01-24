@@ -16,7 +16,6 @@ import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
 import java.net.*;
-import java.lang.*;
 
 
 /*
@@ -34,14 +33,14 @@ public class parser extends EvalFunc<DataBag>
     BufferedReader br = null;
     TupleFactory tf = TupleFactory.getInstance();
 
-    //static final HashMap<String,String> tsld = csvreader.buildmap("/home/hdn11/SLDs.csv");
-    static final HashMap<String,String> tsld = csvreader.buildmap("./SLDs.csv");
+    static final HashMap<String,String> tsld = csvreader.buildmap("SLDs.csv");
+    //static final HashMap<String,String> tsld = csvreader.buildmap("SLDs.csv");
     		//"https://s3.amazonaws.com/historycrawl/tsld/SLDs.csv");
     static final char DOT ='.';
     static int hckeywords = 0;
     String keywords;
     String[] hctokens;
-    BufferedWriter hcdebug = null;
+    //BufferedWriter hcdebug = null;
     @Override
 	public DataBag exec(Tuple input) throws IOException{
     	DataBag output = mBagFactory.newDefaultBag();
@@ -65,16 +64,15 @@ public class parser extends EvalFunc<DataBag>
         	}finally {
         		   try {writer.close();} catch (Exception ex) {}
         	}*/
-    			
-    			//System.out.println("*********file path is:" + filePath);
-    	    	
+    		//hcdebug = new BufferedWriter(new FileWriter("/home/hdn11/hcdebug.txt",true));
+    		
         		buildHashTable();
         		//fstream = new FileInputStream("/home/hdn11/options1.txt");
         		try
         		{
-        		fstream = new FileInputStream("./options1.txt");
-            	in = new DataInputStream(fstream);
-            	br = new BufferedReader(new InputStreamReader(in));
+        			fstream = new FileInputStream("/tmp/options1.txt");
+        			in = new DataInputStream(fstream);
+        			br = new BufferedReader(new InputStreamReader(in));
         		}
         		catch(IOException e)
         		{
@@ -82,11 +80,12 @@ public class parser extends EvalFunc<DataBag>
         		}
         		finally{
         			try{
-        			if(fstream != null)
+        				if(fstream != null)
         			{
         				fstream.close();
         			}
-        			} catch (IOException e)
+        			} 
+        			catch (IOException e)
         			{
         				
         			}        			       			
@@ -125,8 +124,8 @@ public class parser extends EvalFunc<DataBag>
             Pattern ipAddress = Pattern.compile("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b");
             // pattern just detects whether it is in ip format or not xxx.xxx.xxx.xxx (even 999.xxx.xxx.xxx) is correct
 
-	    	
             Matcher urlMatcher = null;
+            
             Tuple header = tf.newTuple();
             header.append("record ");
             header.append(src+" parsing started");
@@ -352,10 +351,10 @@ public class parser extends EvalFunc<DataBag>
     	FileInputStream fstream = null;
     	try{
     	//FileInputStream fstream = new FileInputStream("/home/hdn11/keywords1.txt");
-    	fstream = new FileInputStream("./keywords1.txt");
-    	DataInputStream in = new DataInputStream(fstream);
-    	BufferedReader br = new BufferedReader(new InputStreamReader(in));
-    	strLine = br.readLine();
+    		fstream = new FileInputStream("/tmp/keywords1.txt");
+    		DataInputStream in = new DataInputStream(fstream);
+    		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+    		strLine = br.readLine();
     	}
     	catch (Exception e){
     		
@@ -369,6 +368,7 @@ public class parser extends EvalFunc<DataBag>
     		}
     		
     	}
+    	
     	return strLine;//root url
     }
     
@@ -396,10 +396,10 @@ public class parser extends EvalFunc<DataBag>
     	FileInputStream fstream = null;
     	try{
     	//FileInputStream fstream = new FileInputStream("/home/hdn11/seedlist1.txt");
-    	fstream = new FileInputStream("./seedlist1.txt");
-    	DataInputStream in = new DataInputStream(fstream);
-    	BufferedReader br = new BufferedReader(new InputStreamReader(in));
-    	String strLine;
+    		fstream = new FileInputStream("/tmp/seedlist1.txt");
+    		DataInputStream in = new DataInputStream(fstream);
+    		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+    		String strLine;
     	while ((strLine = br.readLine()) != null){
     		if (!hcHashTable.contains(strLine))
     		hcHashTable.put(strLine, 1);
@@ -505,7 +505,6 @@ public class parser extends EvalFunc<DataBag>
 		   if (j != tokens.length - 1)
 			   strBuf.append(".");
 		   }
-
 		   if (hcHashTable.containsKey(strBuf.toString())){
 			   max = tokens.length - i;
 			   rootURL = strBuf.toString();
@@ -543,7 +542,6 @@ public class parser extends EvalFunc<DataBag>
             
         	 Schema bagSchema = new Schema();
              bagSchema.add(new Schema.FieldSchema("urls", DataType.CHARARRAY));
-
              return new Schema(new Schema.FieldSchema(getSchemaName(this.getClass().getName().toLowerCase(), input),
                                                     bagSchema, DataType.BAG));
 */            
